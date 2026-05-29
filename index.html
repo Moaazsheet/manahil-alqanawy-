@@ -1,0 +1,1034 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>mnahel-alqenawy</title>
+
+<link rel="stylesheet"
+href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;500;700;800&display=swap"
+rel="stylesheet">
+
+<style>
+
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+}
+
+body{
+font-family:'Cairo',sans-serif;
+background:#f7f7fb;
+color:#222;
+}
+
+.container{
+width:95%;
+max-width:1300px;
+margin:auto;
+}
+
+.navbar{
+background:#FF9900;
+padding:18px 0;
+box-shadow:0 2px 10px rgba(0,0,0,0.05);
+position:sticky;
+top:0;
+z-index:1000;
+}
+
+.nav-inner{
+display:flex;
+justify-content:space-between;
+align-items:center;
+}
+
+.logo{
+font-size:28px;
+font-weight:800;
+color:#000000;
+}
+
+.cart-icon{
+position:relative;
+font-size:26px;
+cursor:pointer;
+}
+
+.cart-count{
+position:absolute;
+top:-10px;
+left:-10px;
+background:red;
+color:white;
+width:22px;
+height:22px;
+border-radius:50%;
+display:flex;
+align-items:center;
+justify-content:center;
+font-size:12px;
+}
+
+.hero{
+padding:50px 20px;
+text-align:center;
+}
+
+.hero h1{
+font-size:42px;
+margin-bottom:10px;
+}
+
+.hero p{
+color:#666;
+}
+
+.products-grid{
+display:grid;
+grid-template-columns:repeat(auto-fill,minmax(270px,1fr));
+gap:25px;
+padding-bottom:50px;
+}
+
+.product-card{
+background:white;
+border-radius:20px;
+overflow:hidden;
+box-shadow:0 5px 20px rgba(0,0,0,0.05);
+transition:0.3s;
+}
+
+.product-card:hover{
+transform:translateY(-5px);
+}
+
+.product-img{
+width:100%;
+height:300px;
+object-fit:cover;
+}
+
+.product-info{
+padding:18px;
+}
+
+.product-title{
+font-size:20px;
+font-weight:700;
+margin-bottom:10px;
+}
+
+.product-price{
+font-size:24px;
+font-weight:800;
+color:#7c4dff;
+margin-bottom:15px;
+}
+
+.variant-buttons{
+display:flex;
+flex-wrap:wrap;
+gap:10px;
+margin-bottom:15px;
+}
+
+.variant-btn{
+padding:8px 14px;
+border:none;
+background:#eee;
+border-radius:10px;
+cursor:pointer;
+font-family:'Cairo',sans-serif;
+font-weight:600;
+}
+
+.variant-btn.active{
+background:#7c4dff;
+color:white;
+}
+
+.quantity-box{
+display:flex;
+align-items:center;
+justify-content:center;
+gap:15px;
+margin-bottom:15px;
+}
+
+.qty-btn{
+width:35px;
+height:35px;
+border:none;
+border-radius:50%;
+background:#7c4dff;
+color:white;
+font-size:18px;
+cursor:pointer;
+}
+
+.add-cart-btn{
+width:100%;
+padding:14px;
+border:none;
+border-radius:14px;
+background:#111;
+color:white;
+font-size:16px;
+font-weight:700;
+cursor:pointer;
+}
+
+.add-cart-btn:hover{
+background:#7c4dff;
+}
+
+.cart-overlay{
+position:fixed;
+top:0;
+left:0;
+width:100%;
+height:100%;
+background:rgba(0,0,0,0.5);
+display:none;
+z-index:999;
+}
+
+.cart-drawer{
+position:fixed;
+top:0;
+left:-450px;
+width:100%;
+max-width:450px;
+height:100%;
+background:white;
+z-index:1000;
+transition:0.3s;
+overflow-y:auto;
+padding:20px;
+}
+
+.cart-drawer.open{
+left:0;
+}
+
+.cart-header{
+display:flex;
+justify-content:space-between;
+align-items:center;
+margin-bottom:20px;
+}
+
+.close-cart{
+font-size:24px;
+cursor:pointer;
+}
+
+.cart-item{
+display:flex;
+gap:15px;
+margin-bottom:20px;
+border-bottom:1px solid #eee;
+padding-bottom:15px;
+}
+
+.cart-item img{
+width:80px;
+height:80px;
+border-radius:10px;
+object-fit:cover;
+}
+
+.customer-form{
+display:flex;
+flex-direction:column;
+gap:12px;
+margin-top:20px;
+margin-bottom:20px;
+}
+
+.customer-form input,
+.customer-form select{
+width:100%;
+padding:14px;
+border-radius:14px;
+border:1px solid #ddd;
+font-family:'Cairo',sans-serif;
+font-size:15px;
+outline:none;
+}
+
+.customer-form input:focus,
+.customer-form select:focus{
+border-color:#7c4dff;
+}
+
+.total-price{
+font-size:24px;
+font-weight:800;
+margin:20px 0;
+}
+
+.whatsapp-btn{
+width:100%;
+padding:16px;
+border:none;
+border-radius:14px;
+background:#25D366;
+color:white;
+font-size:18px;
+font-weight:700;
+cursor:pointer;
+}
+
+.notification{
+position:fixed;
+bottom:20px;
+right:20px;
+background:#111;
+color:white;
+padding:14px 20px;
+border-radius:14px;
+z-index:9999;
+}
+
+</style>
+</head>
+
+<body>
+
+<div class="navbar">
+<div class="container">
+<div class="nav-inner">
+
+<div class="logo">mnahel-alqenawy</div>
+
+<div class="cart-icon" id="cartIcon">
+<i class="fa-solid fa-bag-shopping"></i>
+<div class="cart-count" id="cartCount">0</div>
+</div>
+
+</div>
+</div>
+</div>
+
+<section class="hero">
+<h1>مناحل القناوي</h1>
+<p>﷽ 
+قَالَ اللهُ تَعَالَىٰ:
+۞ ثُمَّ كُلِي مِنْ كُلِّ الثَّمَرَاتِ فَاسْلُكِي سُبُلَ رَبِّكِ ذُلُلًا ۚ يَخْرُجُ مِنْ بُطُونِهَا شَرَابٌ مُخْتَلِفٌ أَلْوَانُهُ فِيهِ شِفَاءٌ لِلنَّاسِ ۗ إِنَّ فِي ذَٰلِكَ لَآيَةً لِقَوْمٍ يَتَفَكَّرُونَ ۞
+</p>
+</section>
+
+<div class="container">
+<div class="products-grid" id="productsGrid"></div>
+</div>
+
+<div class="cart-overlay" id="cartOverlay"></div>
+
+<div class="cart-drawer" id="cartDrawer">
+
+<div class="cart-header">
+<h2>سلة الطلبات</h2>
+<div class="close-cart" id="closeCart">✖</div>
+</div>
+
+<div id="cartItems"></div>
+
+<div class="customer-form">
+
+<input type="text"
+id="fullName"
+placeholder="الاسم الكامل">
+
+<input type="tel"
+id="phone"
+placeholder="رقم الهاتف">
+
+<input type="text"
+id="address"
+placeholder="العنوان بالتفصيل">
+
+<input type="email"
+id="email"
+placeholder="البريد الإلكتروني">
+
+<input type="tel"
+id="whatsappNumber"
+placeholder="رقم الواتساب">
+
+<select id="governorate">
+<option value="">اختر المحافظة</option>
+<option>القاهرة</option>
+<option>الإسكندرية</option>
+<option>الجيزة</option>
+<option>القليوبية</option>
+<option>الدقهلية</option>
+<option>الشرقية</option>
+<option>المنوفية</option>
+<option>الغربية</option>
+<option>دمياط</option>
+<option>البحيرة</option>
+<option>كفر الشيخ</option>
+<option>مرسى مطروح</option>
+<option>الفيوم</option>
+<option>بني سويف</option>
+<option>المنيا</option>
+<option>أسيوط</option>
+<option>سوهاج</option>
+<option>قنا</option>
+<option>الأقصر</option>
+<option>أسوان</option>
+<option>بورسعيد</option>
+<option>الوادي الجديد</option>
+<option>الإسماعيلية</option>
+<option>السويس</option>
+<option>شمال سيناء</option>
+<option>جنوب سيناء</option>
+<option>البحر الأحمر</option>
+</select>
+</div>
+<div class="total-price" id="totalPrice">
+0 ج.م
+</div>
+
+<button class="whatsapp-btn"
+onclick="sendOrderToWhatsApp()">
+إرسال الطلب واتساب
+</button>
+
+</div>
+
+<script>
+
+const products = [
+
+{
+id:1,
+name:"عسل برسيم",
+image:"c:\\Users\\win10\\Desktop\\mnahel\\عسل برسيم.jpeg",
+variants:[
+{size:"400 جرام",price:110},
+{size:"800 جرام",price:200},
+{size:"عبوتان 800 جرام",price:360},
+{size:"ثلاثه عبوات 800 جرام",price:510}
+]
+},
+
+{
+id:2,
+name:" شمع (شهد عسل) برسيم",
+image:"c:\\Users\\win10\\Desktop\\mnahel\\عسل شمع.jpeg",
+variants:[
+{size:"1كيلو",price:400},
+{size:"500جرام",price:200},
+{size:"ربع كيلو",price:110},
+]
+},
+
+{
+id:3,
+name:"عسل سدر",
+image:"c:\\Users\\win10\\Desktop\\mnahel\\عسل سدر.jpeg",
+variants:[
+{size:"1كيلو",price:420},
+{size:"400جرام",price:200},
+{size:"800جرام ",price:380},
+{size:"2كيلو",price:740}
+
+]
+},
+
+{
+id:4,
+name:"عسل باور مكسرات",
+image:"c:\\Users\\win10\\Desktop\\mnahel\\باور مكسرات.jpeg",
+variants:[
+{size:"1كيلو",price:700},
+]
+},
+
+{
+id:5,
+name:"عسل الينسون",
+image:"c:\\Users\\win10\\Desktop\\mnahel\\عسل ينسون.jpeg",
+variants:[
+{size:"400 جرام",price:110},
+{size:"800 جرام ",price:200},
+{size:" عبوتان 800 جرام",price:360},
+{size:"  ثلاثه عبوات 800 جرام ",price:510},
+
+]
+},
+
+{
+id:6,
+name:" عسل الشمر",
+image:"c:\\Users\\win10\\Desktop\\mnahel\\عسل شمر.jpeg",
+variants:[
+{size:"400 جرام",price:135},
+{size:"800 جرام ",price:250},
+{size:" عبوتان 800 جرام",price:480},
+{size:"  ثلاثه عبوات 800 جرام ",price:700},
+
+]
+},
+
+{
+id:7,
+name:"عسل البردقوش",
+image:"c:\\Users\\win10\\Desktop\\mnahel\\عسل بردقوش.jpeg",
+variants:[
+{size:"400 جرام",price:110},
+{size:"800 جرام ",price:200},
+{size:" عبوتان 800 جرام",price:360},
+{size:"  ثلاثه عبوات 800 جرام ",price:510},
+
+]
+},
+
+{
+id:8,
+name:"عسل الموالح  ",
+image:"c:\\Users\\win10\\Desktop\\mnahel\\عسل موالح.jpeg",
+variants:[
+{size:"400 جرام",price:130},
+{size:"800 جرام ",price:220},
+{size:" عبوتان 800 جرام",price:420},
+{size:"  ثلاثه عبوات 800 جرام ",price:610},
+
+]
+},
+
+{
+id:9,
+name:" عسل شمر صحراوي",
+image:"c:\\Users\\win10\\Desktop\\mnahel\\شمر صحراوي.jpeg",
+variants:[
+{size:"400 جرام",price:160},
+{size:"1 كيلو",price:350},
+]
+},
+
+{
+id:10,
+name:"عسل أثل",
+image:"c:\\Users\\win10\\Desktop\\mnahel\\عسل اثل.jpeg",
+variants:[
+{size:"400 جرام",price:130},
+{size:"800 جرام ",price:220},
+{size:" عبوتان 800 جرام",price:420},
+{size:"  ثلاثه عبوات 800 جرام ",price:610},
+]
+},
+{
+id:11,
+name:"عسل اكاسيا",
+image:"c:\\Users\\win10\\Desktop\\mnahel\\عسل اكاسيا.jpeg",
+variants:[
+{size:"400 جرام",price:110},
+{size:"800 جرام ",price:200},
+{size:" عبوتان 800 جرام",price:360},
+{size:"  ثلاثه عبوات 800 جرام ",price:510},
+]
+}
+,
+
+{
+id:12,
+name:"عسل حبة البركة",
+image:"c:\\Users\\win10\\Desktop\\mnahel\\عسل حبه بركة.jpeg",
+variants:[
+{size:"400 جرام",price:110},
+{size:"800 جرام ",price:200},
+{size:" عبوتان 800 جرام",price:360},
+{size:"  ثلاثه عبوات 800 جرام ",price:510},
+]
+},
+
+{
+id:14,
+name:"  تركيبه (عاديه) المتزوجين",
+image:"c:\\Users\\win10\\Desktop\\mnahel\\تركيبه المتزوجين عاديه.jpeg",
+variants:[
+{size:"1كيلو",price:700},
+]
+}
+,
+
+{
+id:14,
+name:"  تركيبه (مركزه) المتزوجين",
+image:"c:\\Users\\win10\\Desktop\\mnahel\\تركيبه المتزوجين مركزه.jpeg",
+variants:[
+{size:"1كيلو",price:1300},
+{size:"400 جرام",price:550},
+
+]
+},
+
+{
+id:14,
+name:"  تركيبه (vip) المتزوجين",
+image:"c:\\Users\\win10\\Desktop\\mnahel\\vipتركيبه المتزوجين .jpeg",
+variants:[
+{size:"1كيلو",price:1500},
+{size:"400 جرام",price:650},
+
+]
+}
+,
+
+
+{
+id:13,
+name:" عسل الاعشاب الطبيه",
+image:"c:\\Users\\win10\\Desktop\\mnahel\\عسل الاعشاب الطبيه.jpeg",
+variants:[
+{size:"1كيلو",price:350},
+]
+},
+{
+id:15,
+name:" زيت الزيتون",
+image:"c:\\Users\\win10\\Desktop\\mnahel\\زيت زيتون.jpeg",
+variants:[
+{size:" نصف لتر",price:245},
+{size:"ربع لتر ",price:140}
+]
+},
+
+{
+id:16,
+name:" خل التفاح",
+image:"c:\\Users\\win10\\Desktop\\mnahel\\خل تفاح.jpeg",
+variants:[
+{size:" نصف لتر",price:120},
+{size:" 300 مل ",price:600}
+]
+},
+
+{
+id:17,
+name:" خل عنب",
+image:"c:\\Users\\win10\\Desktop\\mnahel\\خل عنب.jpeg",
+variants:[
+{size:" نصف لتر",price:120},
+{size:" 300 مل ",price:600}
+]
+},
+,
+
+{
+id:18,
+name:" خل رمان",
+image:"c:\\Users\\win10\\Desktop\\mnahel\\خل رمان.jpeg",
+variants:[
+{size:" نصف لتر",price:120},
+{size:" 300 مل ",price:600}
+]
+},
+,
+
+{
+id:19,
+name:"  مختوم فلسطيني",
+image:"c:\\Users\\win10\\Desktop\\mnahel\\مختوم فلسطيني.jpeg",
+variants:[
+{size:" حجم صغير  ",price:320},
+{size:" حجم كبير   ",price:650}
+]
+}
+,
+
+{
+id:20,
+name:"كريم سم نحل للبشرة ",
+image:"c:\\Users\\win10\\Desktop\\mnahel\\كريم سم نحل للبشرة.jpeg",
+variants:[
+{size:" 60 جرام   ",price:110},
+]
+}
+,
+
+{
+id:21,
+name:"كريم سم نحل للشعر ",
+image:"c:\\Users\\win10\\Desktop\\mnahel\\كريم سم نحل للشعر.jpeg",
+variants:[
+{size:"  60 جرام  ",price:100},
+]
+},
+
+{
+id:22,
+name:" كريم سم نحل للمفاصل ",
+image:"c:\\Users\\win10\\Desktop\\mnahel\\كريم سم نحل للمفاصل.jpeg",
+variants:[
+{size:"    عبوه واحده",price:200},
+{size:"    عبوتان  ",price:400},
+
+]
+},
+
+{
+id:23,
+name:"كريم البروبليس وسم النحل",
+image:"c:\\Users\\win10\\Desktop\\mnahel\\كريم البروبليس وسم النحل.jpeg",
+variants:[
+{size:"  60 جرام  ",price:110},
+]
+},
+];
+const productsGrid = document.getElementById("productsGrid");
+
+let cart = [];
+
+function renderProducts(){
+
+productsGrid.innerHTML = "";
+
+products.forEach(product=>{
+
+let selectedVariant = product.variants[0];
+
+const card = document.createElement("div");
+
+card.className = "product-card";
+
+card.innerHTML = `
+
+<img src="${product.image}" class="product-img">
+
+<div class="product-info">
+
+<div class="product-title">
+${product.name}
+</div>
+
+<div class="product-price" id="price-${product.id}">
+${selectedVariant.price} ج.م
+</div>
+
+<div class="variant-buttons">
+
+${product.variants.map((variant,index)=>`
+
+<button class="variant-btn ${index===0 ? 'active' : ''}"
+data-product="${product.id}"
+data-size="${variant.size}"
+data-price="${variant.price}">
+
+${variant.size}
+
+</button>
+
+`).join("")}
+
+</div>
+
+<div class="quantity-box">
+
+<button class="qty-btn minus">-</button>
+
+<span class="qty">1</span>
+
+<button class="qty-btn plus">+</button>
+
+</div>
+
+<button class="add-cart-btn">
+أضف للسلة
+</button>
+
+</div>
+
+`;
+
+productsGrid.appendChild(card);
+
+const qtySpan = card.querySelector(".qty");
+
+const plusBtn = card.querySelector(".plus");
+
+const minusBtn = card.querySelector(".minus");
+
+plusBtn.onclick = ()=>{
+qtySpan.innerText =
+parseInt(qtySpan.innerText)+1;
+};
+
+minusBtn.onclick = ()=>{
+let qty = parseInt(qtySpan.innerText);
+
+if(qty > 1){
+qtySpan.innerText = qty - 1;
+}
+};
+
+const variantBtns = card.querySelectorAll(".variant-btn");
+
+variantBtns.forEach(btn=>{
+
+btn.onclick = ()=>{
+
+variantBtns.forEach(b=>b.classList.remove("active"));
+
+btn.classList.add("active");
+
+selectedVariant = {
+size:btn.dataset.size,
+price:Number(btn.dataset.price)
+};
+
+document.getElementById(`price-${product.id}`)
+.innerText =
+`${selectedVariant.price} ج.م`;
+
+};
+
+});
+
+card.querySelector(".add-cart-btn")
+.onclick = ()=>{
+
+addToCart({
+id:product.id,
+name:product.name,
+image:product.image,
+size:selectedVariant.size,
+price:selectedVariant.price,
+quantity:Number(qtySpan.innerText)
+});
+
+};
+
+});
+
+}
+
+function addToCart(item){
+
+const existing = cart.find(p=>
+p.id === item.id &&
+p.size === item.size
+);
+
+if(existing){
+
+existing.quantity += item.quantity;
+
+}else{
+
+cart.push(item);
+
+}
+
+updateCart();
+
+showNotification("تمت الإضافة للسلة");
+
+}
+
+function updateCart(){
+
+document.getElementById("cartCount")
+.innerText =
+cart.reduce((a,b)=>a+b.quantity,0);
+
+const cartItems =
+document.getElementById("cartItems");
+
+cartItems.innerHTML = "";
+
+let total = 0;
+
+cart.forEach(item=>{
+
+total += item.price * item.quantity;
+
+cartItems.innerHTML += `
+
+<div class="cart-item">
+
+<img src="${item.image}">
+
+<div>
+
+<h4>${item.name}</h4>
+
+<p>المقاس: ${item.size}</p>
+
+<p>${item.price} ج.م</p>
+
+<p>الكمية: ${item.quantity}</p>
+
+</div>
+
+</div>
+
+`;
+
+});
+
+document.getElementById("totalPrice")
+.innerText =
+`${total} ج.م`;
+
+}
+
+function sendOrderToWhatsApp() {
+
+if(cart.length === 0){
+showNotification("السلة فارغة");
+return;
+}
+
+const customerName =
+document.getElementById("fullName")
+.value.trim();
+
+const customerPhone =
+document.getElementById("phone")
+.value.trim();
+
+const customerAddress =
+document.getElementById("address")
+.value.trim();
+
+const customerGovernorate =
+document.getElementById("governorate")
+.value;
+
+const customerWhatsapp =
+document.getElementById("whatsappNumber")
+.value.trim();
+
+const customerEmail =
+document.getElementById("email")
+.value.trim();
+
+if(!customerName){
+showNotification("اكتب الاسم");
+return;
+}
+
+if(!customerPhone){
+showNotification("اكتب رقم الهاتف");
+return;
+}
+
+if(!customerAddress){
+showNotification("اكتب العنوان");
+return;
+}
+
+if(!customerGovernorate){
+showNotification("اختر المحافظة");
+return;
+}
+
+let message = `🛍️ طلب جديد من المتجر\n\n`;
+
+message += `👤 الاسم: ${customerName}\n`;
+message += `📞 الهاتف: ${customerPhone}\n`;
+message += `💬 واتساب: ${customerWhatsapp}\n`;
+message += `📧 الإيميل: ${customerEmail}\n`;
+message += `📍 العنوان: ${customerAddress}\n`;
+message += `🏙️ المحافظة: ${customerGovernorate}\n`;
+
+message += `\n━━━━━━━━━━━━━━\n`;
+
+message += `🛒 المنتجات:\n\n`;
+
+let total = 0;
+
+cart.forEach(item=>{
+
+const itemTotal =
+item.price * item.quantity;
+
+total += itemTotal;
+
+message += `▪️ ${item.name}\n`;
+
+message += `📏 المقاس: ${item.size}\n`;
+
+message += `💰 السعر: ${item.price} ج.م\n`;
+
+message += `🔢 الكمية: ${item.quantity}\n`;
+
+message += `🧾 الإجمالي: ${itemTotal} ج.م\n`;
+
+message += `------------------\n`;
+
+});
+
+message += `\n💵 الإجمالي الكلي: ${total} ج.م`;
+
+const ownerPhone = "2015527018881";
+
+window.open(
+`https://wa.me/${ownerPhone}?text=${encodeURIComponent(message)}`,
+"_blank"
+);
+
+}
+
+function showNotification(text){
+
+const notification =
+document.createElement("div");
+
+notification.className =
+"notification";
+
+notification.innerText = text;
+
+document.body.appendChild(notification);
+
+setTimeout(()=>{
+notification.remove();
+},2000);
+
+}
+
+const cartDrawer =
+document.getElementById("cartDrawer");
+
+const cartOverlay =
+document.getElementById("cartOverlay");
+
+document.getElementById("cartIcon")
+.onclick = ()=>{
+
+cartDrawer.classList.add("open");
+
+cartOverlay.style.display = "block";
+
+};
+
+document.getElementById("closeCart")
+.onclick = closeCart;
+
+cartOverlay.onclick = closeCart;
+
+function closeCart(){
+
+cartDrawer.classList.remove("open");
+
+cartOverlay.style.display = "none";
+
+}
+
+renderProducts();
+
+</script>
+
+</body>
+</html>
