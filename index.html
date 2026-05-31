@@ -397,6 +397,16 @@ placeholder="رقم الواتساب">
 0 ج.م
 </div>
 
+<div style="font-size:20px;font-weight:700;margin-bottom:10px">
+🚚 الشحن:
+<span id="shippingPrice">0 ج.م</span>
+</div>
+
+<div style="font-size:24px;font-weight:800">
+💰 الإجمالي النهائي:
+<span id="finalTotal">0 ج.م</span>
+</div>
+
 <button class="whatsapp-btn"
 onclick="sendOrderToWhatsApp()">
 إرسال الطلب واتساب
@@ -622,9 +632,8 @@ variants:[
 {size:" 300 مل ",price:600}
 ]
 },
-,
-
 {
+id:18,
 id:18,
 name:" خل رمان",
 image:"c:\\Users\\win10\\Desktop\\mnahel\\خل رمان.jpeg",
@@ -633,8 +642,6 @@ variants:[
 {size:" 300 مل ",price:600}
 ]
 },
-,
-
 {
 id:19,
 name:"  مختوم فلسطيني",
@@ -688,7 +695,35 @@ variants:[
 const productsGrid = document.getElementById("productsGrid");
 
 let cart = [];
-
+const shippingPrices = {
+"القاهرة":80,
+"الإسكندرية":90,
+"الجيزة":80,
+"القليوبية":80,
+"الدقهلية":85,
+"الشرقية":85,
+"المنوفية":85,
+"الغربية":85,
+"دمياط":90,
+"البحيرة":90,
+"كفر الشيخ":90,
+"مرسى مطروح":120,
+"الفيوم":80,
+"بني سويف":80,
+"المنيا":85,
+"أسيوط":90,
+"سوهاج":90,
+"قنا":70,
+"الأقصر":75,
+"أسوان":90,
+"بورسعيد":90,
+"الوادي الجديد":120,
+"الإسماعيلية":85,
+"السويس":85,
+"شمال سيناء":120,
+"جنوب سيناء":130,
+"البحر الأحمر":120
+};
 function renderProducts(){
 
 productsGrid.innerHTML = "";
@@ -786,9 +821,23 @@ size:btn.dataset.size,
 price:Number(btn.dataset.price)
 };
 
-document.getElementById(`price-${product.id}`)
+document.getElementById("totalPrice")
 .innerText =
-`${selectedVariant.price} ج.م`;
+`${total} ج.م`;
+
+const governorate =
+document.getElementById("governorate").value;
+
+const shipping =
+shippingPrices[governorate] || 0;
+
+document.getElementById("shippingPrice")
+.innerText =
+`${shipping} ج.م`;
+
+document.getElementById("finalTotal")
+.innerText =
+`${total + shipping} ج.م`;
 
 };
 
@@ -880,6 +929,20 @@ document.getElementById("totalPrice")
 .innerText =
 `${total} ج.م`;
 
+const governorate =
+document.getElementById("governorate").value;
+
+const shipping =
+shippingPrices[governorate] || 0;
+
+document.getElementById("shippingPrice")
+.innerText =
+`${shipping} ج.م`;
+
+document.getElementById("finalTotal")
+.innerText =
+`${total + shipping} ج.م`;
+
 }
 
 function sendOrderToWhatsApp() {
@@ -968,7 +1031,15 @@ message += `🧾 الإجمالي: ${itemTotal} ج.م\n`;
 message += `------------------\n`;
 
 });
+const shipping =
+shippingPrices[customerGovernorate] || 0;
 
+const finalTotal =
+total + shipping;
+
+message += `\n🚚 الشحن: ${shipping} ج.م`;
+message += `\n💵 إجمالي المنتجات: ${total} ج.م`;
+message += `\n✅ الإجمالي النهائي: ${finalTotal} ج.م`;
 message += `\n💵 الإجمالي الكلي: ${total} ج.م`;
 
 const ownerPhone = "2015527018881";
@@ -1025,7 +1096,9 @@ cartDrawer.classList.remove("open");
 cartOverlay.style.display = "none";
 
 }
-
+document
+.getElementById("governorate")
+.addEventListener("change", updateCart);
 renderProducts();
 
 </script>
