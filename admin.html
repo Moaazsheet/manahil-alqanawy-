@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<title>Admin Dashboard Pro</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;800&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<style>
+body{
+  margin:0;
+  font-family:Cairo;
+  background:#0f172a;
+  color:white;
+}
+
+/* LOGIN */
+#login{
+  height:100vh;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+}
+
+.box{
+  background:#111827;
+  padding:25px;
+  border-radius:15px;
+  width:320px;
+}
+
+input,button{
+  width:100%;
+  padding:10px;
+  margin-top:10px;
+  border-radius:10px;
+  border:none;
+}
+
+button{
+  cursor:pointer;
+  background:#3b82f6;
+  color:white;
+  font-weight:bold;
+}
+
+/* PANEL */
+#panel{display:none}
+
+.nav{
+  background:#111827;
+  padding:15px;
+}
+
+.stats{
+  display:grid;
+  grid-template-columns:repeat(4,1fr);
+  gap:10px;
+  padding:15px;
+}
+
+.card{
+  background:#1f2937;
+  padding:15px;
+  border-radius:12px;
+  text-align:center;
+}
+
+.container{padding:15px}
+
+.review{
+  background:#1f2937;
+  margin-top:10px;
+  padding:10px;
+  border-radius:10px;
+}
+
+button.small{
+  width:auto;
+  padding:6px 10px;
+  margin-left:5px;
+  font-size:12px;
+}
+
+.toast{
+  position:fixed;
+  bottom:20px;
+  left:20px;
+  background:#22c55e;
+  padding:10px;
+  border-radius:10px;
+  display:none;
+}
+</style>
+</head>
+
+<body>
+
+<!-- LOGIN -->
+<div id="login">
+  <div class="box">
+    <h3>Admin Login</h3>
+    <input id="pass" type="password" placeholder="Password">
+    <button onclick="login()">Login</button>
+  </div>
+</div>
+
+<!-- DASHBOARD -->
+<div id="panel">
+
+<div class="nav">
+  <h2>🔥 Admin Dashboard</h2>
+</div>
+
+<div class="stats">
+  <div class="card">Total <div id="total">0</div></div>
+  <div class="card">Pinned <div id="pinned">0</div></div>
+  <div class="card">Positive <div id="pos">0</div></div>
+  <div class="card">Negative <div id="neg">0</div></div>
+</div>
+
+<div style="padding:15px">
+  <h3>📊 Reviews Analytics</h3>
+  <canvas id="chart"></canvas>
+</div>
+
+<div class="container" id="list"></div>
+
+</div>
+
+<div class="toast" id="toast">Done</div>
+
+<script type="module">
+
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+import { getFirestore, collection, onSnapshot, deleteDoc, doc, updateDoc }
+from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+
+const firebaseConfig = {
+  apiKey: "AIzaSyD7HP5CQNYE6LWUzkePbfy79GsjaArJvuk",
+  authDomain: "mnahel-store.firebaseapp.com",
+  projectId: "mnahel-store",
+};
+
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
+
+let all = [];
+let chart;
+
+/* LOGIN */
+window.login = function(){
+  const pass = document.getElementById("pass").value;
+
+  if(pass === "moaazsheet"){
+    document.getElementById("login").style.display="none";
+    document.getElementById("panel").style.display="block";
+    load();
+    initChart();
+  }
+}
+
+/* TOAST */
+function toast(msg){
+  const t=document.getElementById("toast");
+  t.innerText=msg;
+  t.style.display="block";
+  setTimeout(()=>t.style.display="none",2000);
+}
+
+/* FIREBASE */
+function load(){
+  onSnapshot(collection(db,"reviews"), snap=>{
+    all=[];
+    snap.forEach(d=>{
+      all.push({id:d.id,...d.data()});
+    });
+    render(all);
+  });
+}
+
+/* CHART */
+function initChart(){
+  const ctx=document.getElementById("chart");
+
+  chart=new Chart(ctx,{
+    type:"pie",
+    data:{
+      labels:["Positive","Negative","Neutral"],
+      datasets:[{data:[0,0,0]}]
+    }
+  });
+}
+
+/* ANALYZE */
+function analyze(text){
+  const t=(text||"").toLowerCase();
+
+  if(t.includes("good")||t.includes("great")||t.includes("جميل")) return "Positive";
+  if(t.includes("bad")||t.includes("worst")||t.includes("سيئ")) return "Negative";
+  return "Neutral";
+}
+
+/* RENDER */
+function render(data){
+
+  let pos=0,neg=0,neu=0;
+
+  data.forEach(r=>{
+    const type=analyze(r.text);
+
+    if(type==="Positive") pos++;
+    else if(type==="Negative") neg++;
+    else neu++;
+  });
+
+  document.getElementById("total").innerText=data.length;
+  document.getElementById("pos").innerText=pos;
+  document.getElementById("neg").innerText=neg;
+  document.getElementById("pinned").innerText=data.filter(r=>r.pinned).length;
+
+  chart.data.datasets[0].data=[pos,neg,neu];
+  chart.update();
+
+  document.getElementById("list").innerHTML=data.map(r=>`
+    <div class="review">
+      <b>${r.name}</b>
+      <p>${r.text}</p>
+
+      <button class="small" onclick="editReview('${r.id}','${encodeURIComponent(r.text)}')">✏️ Edit</button>
+      <button class="small" onclick="deleteReview('${r.id}')">🗑 Delete</button>
+    </div>
+  `).join("");
+}
+
+/* DELETE */
+window.deleteReview = async function(id){
+  if(confirm("Delete review?")){
+    await deleteDoc(doc(db,"reviews",id));
+    toast("Deleted ✔");
+  }
+}
+
+/* EDIT */
+window.editReview = async function(id,text){
+  const decoded = decodeURIComponent(text);
+  const newText = prompt("Edit review:", decoded);
+
+  if(newText && newText.trim() !== ""){
+    await updateDoc(doc(db,"reviews",id),{
+      text:newText
+    });
+    toast("Updated ✔");
+  }
+}
+
+</script>
+
+</body>
+</html>
