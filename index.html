@@ -297,28 +297,144 @@ padding:14px 20px;
 border-radius:14px;
 z-index:9999;
 }
+.reviews-btn {
+  background: white;
+  color: #FF9900;
+  padding: 8px 14px;
+  border-radius: 20px;
+  font-weight: bold;
+  text-decoration: none;
+  transition: 0.3s;
+  box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+}
 
+.reviews-btn:hover {
+  background: #111;
+  color: white;
+  transform: scale(1.05);
+}
+.nav-inner{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  gap:20px;
+}
+
+.logo{
+  font-size:24px;
+  font-weight:800;
+}
+
+.nav-links{
+  display:flex;
+  gap:15px;
+  align-items:center;
+}
+
+.nav-links a{
+  text-decoration:none;
+  color:#111;
+  font-weight:600;
+  padding:6px 10px;
+  border-radius:10px;
+  transition:0.3s;
+}
+
+.nav-links a:hover{
+  background:#111;
+  color:#fff;
+}
+
+/* زر الآراء */
+.reviews-btn{
+  background: linear-gradient(135deg,#6a11cb,#2575fc);
+  color:white !important;
+  padding:6px 12px;
+  border-radius:20px;
+  box-shadow:0 3px 10px rgba(0,0,0,0.15);
+}
+
+.reviews-btn:hover{
+  transform:scale(1.05);
+}
+
+/* السلة */
+.cart-icon{
+  position:relative;
+  font-size:24px;
+  cursor:pointer;
+}
+
+/* موبايل */
+.menu-toggle{
+  display:none;
+  font-size:28px;
+  cursor:pointer;
+}
+
+@media(max-width:768px){
+  .nav-links{
+    display:none;
+    position:absolute;
+    top:70px;
+    right:0;
+    background:white;
+    flex-direction:column;
+    width:200px;
+    padding:15px;
+    box-shadow:0 5px 20px rgba(0,0,0,0.1);
+    border-radius:10px;
+  }
+
+  .nav-links.active{
+    display:flex;
+  }
+
+  .menu-toggle{
+    display:block;
+  }
+}
 </style>
 </head>
 
 <body>
-
 <div class="navbar">
-<div class="container">
-<div class="nav-inner">
 
-<div class="logo">mnahel-alqenawy</div>
+  <div class="container">
+    <div class="nav-inner">
 
-<div class="cart-icon" id="cartIcon">
-<i class="fa-solid fa-bag-shopping"></i>
-<div class="cart-count" id="cartCount">0</div>
-</div>
+      <div class="logo">
+        🐝 مناحل القناوي
+      </div>
+
+      <!-- روابط -->
+      <div class="nav-links">
+        <a href="reviews.html" class="reviews-btn">
+          ⭐ آراء العملاء
+        </a>
+      </div>
+
+      <!-- السلة -->
+      <div class="cart-icon" id="cartIcon">
+        <i class="fa-solid fa-bag-shopping"></i>
+        <div class="cart-count" id="cartCount">0</div>
+      </div>
+
+      <!-- زر موبايل -->
+      <div class="menu-toggle" onclick="toggleMenu()">
+        ☰
+      </div>
+
+    </div>
+  </div>
 
 </div>
-</div>
-</div>
+
 
 <section class="hero">
+    <br><br>
+
+
 <h1>مناحل القناوي</h1>
 <p>﷽ 
 قَالَ اللهُ تَعَالَىٰ:
@@ -1082,7 +1198,10 @@ document
 .getElementById("governorate")
 .addEventListener("change", updateCart);
 renderProducts();
-
+function toggleMenu(){
+  document.querySelector(".nav-links")
+  .classList.toggle("active");
+}
 </script>
 
 </body>
