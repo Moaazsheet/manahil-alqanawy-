@@ -2,6 +2,7 @@
 <html lang="ar" dir="rtl">
 
 <head>
+    <link rel="icon" href="images/logo.png" type="image/png">
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
@@ -296,28 +297,144 @@ padding:14px 20px;
 border-radius:14px;
 z-index:9999;
 }
+.reviews-btn {
+  background: white;
+  color: #FF9900;
+  padding: 8px 14px;
+  border-radius: 20px;
+  font-weight: bold;
+  text-decoration: none;
+  transition: 0.3s;
+  box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+}
 
+.reviews-btn:hover {
+  background: #111;
+  color: white;
+  transform: scale(1.05);
+}
+.nav-inner{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  gap:20px;
+}
+
+.logo{
+  font-size:24px;
+  font-weight:800;
+}
+
+.nav-links{
+  display:flex;
+  gap:15px;
+  align-items:center;
+}
+
+.nav-links a{
+  text-decoration:none;
+  color:#111;
+  font-weight:600;
+  padding:6px 10px;
+  border-radius:10px;
+  transition:0.3s;
+}
+
+.nav-links a:hover{
+  background:#111;
+  color:#fff;
+}
+
+/* زر الآراء */
+.reviews-btn{
+  background: linear-gradient(135deg,#6a11cb,#2575fc);
+  color:white !important;
+  padding:6px 12px;
+  border-radius:20px;
+  box-shadow:0 3px 10px rgba(0,0,0,0.15);
+}
+
+.reviews-btn:hover{
+  transform:scale(1.05);
+}
+
+/* السلة */
+.cart-icon{
+  position:relative;
+  font-size:24px;
+  cursor:pointer;
+}
+
+/* موبايل */
+.menu-toggle{
+  display:none;
+  font-size:28px;
+  cursor:pointer;
+}
+
+@media(max-width:768px){
+  .nav-links{
+    display:none;
+    position:absolute;
+    top:70px;
+    right:0;
+    background:white;
+    flex-direction:column;
+    width:200px;
+    padding:15px;
+    box-shadow:0 5px 20px rgba(0,0,0,0.1);
+    border-radius:10px;
+  }
+
+  .nav-links.active{
+    display:flex;
+  }
+
+  .menu-toggle{
+    display:block;
+  }
+}
 </style>
 </head>
 
 <body>
-
 <div class="navbar">
-<div class="container">
-<div class="nav-inner">
 
-<div class="logo">mnahel-alqenawy</div>
+  <div class="container">
+    <div class="nav-inner">
 
-<div class="cart-icon" id="cartIcon">
-<i class="fa-solid fa-bag-shopping"></i>
-<div class="cart-count" id="cartCount">0</div>
-</div>
+      <div class="logo">
+        🐝 مناحل القناوي
+      </div>
+
+      <!-- روابط -->
+      <div class="nav-links">
+        <a href="reviews.html" class="reviews-btn">
+          ⭐ آراء العملاء
+        </a>
+      </div>
+
+      <!-- السلة -->
+      <div class="cart-icon" id="cartIcon">
+        <i class="fa-solid fa-bag-shopping"></i>
+        <div class="cart-count" id="cartCount">0</div>
+      </div>
+
+      <!-- زر موبايل -->
+      <div class="menu-toggle" onclick="toggleMenu()">
+        ☰
+      </div>
+
+    </div>
+  </div>
 
 </div>
-</div>
-</div>
+
 
 <section class="hero">
+    <br><br>
+
+
 <h1>مناحل القناوي</h1>
 <p>﷽ 
 قَالَ اللهُ تَعَالَىٰ:
@@ -397,6 +514,16 @@ placeholder="رقم الواتساب">
 0 ج.م
 </div>
 
+<div style="font-size:20px;font-weight:700;margin-bottom:10px">
+🚚 الشحن:
+<span id="shippingPrice">0 ج.م</span>
+</div>
+
+<div style="font-size:24px;font-weight:800">
+💰 الإجمالي النهائي:
+<span id="finalTotal">0 ج.م</span>
+</div>
+
 <button class="whatsapp-btn"
 onclick="sendOrderToWhatsApp()">
 إرسال الطلب واتساب
@@ -411,7 +538,7 @@ const products = [
 {
 id:1,
 name:"عسل برسيم",
-image:"c:\\Users\\win10\\Desktop\\mnahel\\عسل برسيم.jpeg",
+image:"images/عسل برسيم.jpeg",
 variants:[
 {size:"400 جرام",price:110},
 {size:"800 جرام",price:200},
@@ -422,19 +549,21 @@ variants:[
 
 {
 id:2,
-name:" شمع (شهد عسل) برسيم",
-image:"c:\\Users\\win10\\Desktop\\mnahel\\عسل شمع.jpeg",
+name:" عسل موز",
+image:"images/عسل موز.jpeg",
 variants:[
-{size:"1كيلو",price:400},
-{size:"500جرام",price:200},
-{size:"ربع كيلو",price:110},
+{size:"400 جرام",price:130},
+{size:"800 جرام ",price:220},
+{size:" عبوتان 800 جرام",price:420},
+{size:"  ثلاثه عبوات 800 جرام ",price:610},
+
 ]
 },
 
 {
 id:3,
 name:"عسل سدر",
-image:"c:\\Users\\win10\\Desktop\\mnahel\\عسل سدر.jpeg",
+image:"images/عسل سدر.jpeg",
 variants:[
 {size:"1كيلو",price:420},
 {size:"400جرام",price:200},
@@ -447,7 +576,7 @@ variants:[
 {
 id:4,
 name:"عسل باور مكسرات",
-image:"c:\\Users\\win10\\Desktop\\mnahel\\باور مكسرات.jpeg",
+image:"images/باور مكسرات.jpeg",
 variants:[
 {size:"1كيلو",price:700},
 ]
@@ -456,7 +585,7 @@ variants:[
 {
 id:5,
 name:"عسل الينسون",
-image:"c:\\Users\\win10\\Desktop\\mnahel\\عسل ينسون.jpeg",
+image:"images/عسل ينسون.jpeg",
 variants:[
 {size:"400 جرام",price:110},
 {size:"800 جرام ",price:200},
@@ -469,7 +598,7 @@ variants:[
 {
 id:6,
 name:" عسل الشمر",
-image:"c:\\Users\\win10\\Desktop\\mnahel\\عسل شمر.jpeg",
+image:"images/عسل شمر.jpeg",
 variants:[
 {size:"400 جرام",price:135},
 {size:"800 جرام ",price:250},
@@ -482,7 +611,7 @@ variants:[
 {
 id:7,
 name:"عسل البردقوش",
-image:"c:\\Users\\win10\\Desktop\\mnahel\\عسل بردقوش.jpeg",
+image:"images/عسل بردقوش.jpeg",
 variants:[
 {size:"400 جرام",price:110},
 {size:"800 جرام ",price:200},
@@ -495,7 +624,7 @@ variants:[
 {
 id:8,
 name:"عسل الموالح  ",
-image:"c:\\Users\\win10\\Desktop\\mnahel\\عسل موالح.jpeg",
+image:"images/عسل موالح.jpeg",
 variants:[
 {size:"400 جرام",price:130},
 {size:"800 جرام ",price:220},
@@ -508,7 +637,7 @@ variants:[
 {
 id:9,
 name:" عسل شمر صحراوي",
-image:"c:\\Users\\win10\\Desktop\\mnahel\\شمر صحراوي.jpeg",
+image:"images/شمر صحراوي.jpeg",
 variants:[
 {size:"400 جرام",price:160},
 {size:"1 كيلو",price:350},
@@ -518,7 +647,7 @@ variants:[
 {
 id:10,
 name:"عسل أثل",
-image:"c:\\Users\\win10\\Desktop\\mnahel\\عسل اثل.jpeg",
+image:"images/عسل اثل.jpeg",
 variants:[
 {size:"400 جرام",price:130},
 {size:"800 جرام ",price:220},
@@ -529,7 +658,7 @@ variants:[
 {
 id:11,
 name:"عسل اكاسيا",
-image:"c:\\Users\\win10\\Desktop\\mnahel\\عسل اكاسيا.jpeg",
+image:"images/عسل اكاسيا.jpeg",
 variants:[
 {size:"400 جرام",price:110},
 {size:"800 جرام ",price:200},
@@ -538,11 +667,10 @@ variants:[
 ]
 }
 ,
-
 {
 id:12,
 name:"عسل حبة البركة",
-image:"c:\\Users\\win10\\Desktop\\mnahel\\عسل حبه بركة.jpeg",
+image:"images/عسل حبه بركة.jpeg",
 variants:[
 {size:"400 جرام",price:110},
 {size:"800 جرام ",price:200},
@@ -552,9 +680,9 @@ variants:[
 },
 
 {
-id:14,
+id:13,
 name:"  تركيبه (عاديه) المتزوجين",
-image:"c:\\Users\\win10\\Desktop\\mnahel\\تركيبه المتزوجين عاديه.jpeg",
+image:"images/تركيبه المتزوجين عاديه.jpeg",
 variants:[
 {size:"1كيلو",price:700},
 ]
@@ -564,7 +692,7 @@ variants:[
 {
 id:14,
 name:"  تركيبه (مركزه) المتزوجين",
-image:"c:\\Users\\win10\\Desktop\\mnahel\\تركيبه المتزوجين مركزه.jpeg",
+image:"images/تركيبه المتزوجين مركزه.jpeg",
 variants:[
 {size:"1كيلو",price:1300},
 {size:"400 جرام",price:550},
@@ -573,9 +701,9 @@ variants:[
 },
 
 {
-id:14,
+id:15,
 name:"  تركيبه (vip) المتزوجين",
-image:"c:\\Users\\win10\\Desktop\\mnahel\\vipتركيبه المتزوجين .jpeg",
+image:"images/vipتركيبه المتزوجين .jpeg",
 variants:[
 {size:"1كيلو",price:1500},
 {size:"400 جرام",price:650},
@@ -583,20 +711,90 @@ variants:[
 ]
 }
 ,
+{
+id:21,
+name:"  مختوم فلسطيني",
+image:"images/مختوم فلسطيني.jpeg",
+variants:[
+{size:" حجم صغير  ",price:320},
+{size:" حجم كبير   ",price:650}
+]
+}
+,
+{
+id:27,
+name:"تركيبه مناعه",
+image:"images/تركيبه مناعه.jpeg",
+variants:[
+{size:"  كيلو  ",price:800},
+{size:"  تركيبة مناعة الاطفال كيلو  ",price:480},
+{size:" 400 جرام    ",price:380}
 
+]
+}
+,
+{
+id:28,
+name:"اصحاب المزاج",
+image:"images/اصحاب المزاج.jpeg",
+variants:[
+{size:"  كيلو  ",price:1500},
+]
+}
+,
+{
+id:29,
+name:"تركيبه باور القناوي",
+image:"images/تركيبه باور القناوي.jpeg",
+variants:[
+{size:"  كيلو  ",price:700},
+]
+}
+,
+{
+id:30,
+name:"تركيبه الانميا",
+image:"images/تركيبه انميا.jpeg",
+variants:[
+{size:"  كيلو  ",price:650},
+{size:"  400 جرام ",price:300},
+]
+}
+
+,
+{
+id:31,
+name:"تركيبه الانجاب مركزه",
+image:"images/تركيبه الانجاب.jpeg",
+variants:[
+{size:"  كيلو  ",price:1500},
+{size:"  400 جرام ",price:600},
+]
+}
+,
 
 {
-id:13,
+id:32,
+name:"تركيبه الانجاب عاديه",
+image:"images/تركيبه الانجاب.jpeg",
+variants:[
+{size:"  كيلو  ",price:800},
+{size:"  400 جرام ",price:300},
+]
+}
+,
+{
+id:16,
 name:" عسل الاعشاب الطبيه",
-image:"c:\\Users\\win10\\Desktop\\mnahel\\عسل الاعشاب الطبيه.jpeg",
+image:"images/عسل الاعشاب الطبيه.jpeg",
 variants:[
 {size:"1كيلو",price:350},
 ]
 },
 {
-id:15,
+id:17,
 name:" زيت الزيتون",
-image:"c:\\Users\\win10\\Desktop\\mnahel\\زيت زيتون.jpeg",
+image:"images/زيت زيتون.jpeg",
 variants:[
 {size:" نصف لتر",price:245},
 {size:"ربع لتر ",price:140}
@@ -604,91 +802,212 @@ variants:[
 },
 
 {
-id:16,
-name:" خل التفاح",
-image:"c:\\Users\\win10\\Desktop\\mnahel\\خل تفاح.jpeg",
-variants:[
-{size:" نصف لتر",price:120},
-{size:" 300 مل ",price:600}
-]
-},
-
-{
-id:17,
-name:" خل عنب",
-image:"c:\\Users\\win10\\Desktop\\mnahel\\خل عنب.jpeg",
-variants:[
-{size:" نصف لتر",price:120},
-{size:" 300 مل ",price:600}
-]
-},
-,
-
-{
 id:18,
-name:" خل رمان",
-image:"c:\\Users\\win10\\Desktop\\mnahel\\خل رمان.jpeg",
+name:" خل التفاح",
+image:"images/خل تفاح.jpeg",
 variants:[
 {size:" نصف لتر",price:120},
-{size:" 300 مل ",price:600}
+{size:" 300 مل ",price:60}
 ]
 },
-,
 
 {
 id:19,
-name:"  مختوم فلسطيني",
-image:"c:\\Users\\win10\\Desktop\\mnahel\\مختوم فلسطيني.jpeg",
+name:" خل عنب",
+image:"images/خل عنب.jpeg",
 variants:[
-{size:" حجم صغير  ",price:320},
-{size:" حجم كبير   ",price:650}
-]
-}
-,
-
-{
-id:20,
-name:"كريم سم نحل للبشرة ",
-image:"c:\\Users\\win10\\Desktop\\mnahel\\كريم سم نحل للبشرة.jpeg",
-variants:[
-{size:" 60 جرام   ",price:110},
-]
-}
-,
-
-{
-id:21,
-name:"كريم سم نحل للشعر ",
-image:"c:\\Users\\win10\\Desktop\\mnahel\\كريم سم نحل للشعر.jpeg",
-variants:[
-{size:"  60 جرام  ",price:100},
+{size:" نصف لتر",price:120},
+{size:" 300 مل ",price:60}
 ]
 },
+{
+id:20,
+name:" خل رمان",
+image:"images/خل رمان.jpeg",
+variants:[
+{size:" نصف لتر",price:120},
+{size:" 300 مل ",price:60}
+]
+}
+,
 
 {
 id:22,
+name:"كريم سم نحل للبشرة ",
+image:"images/كريم سم نحل للبشرة.jpeg",
+variants:[
+{size:" 60 جرام   ",price:110},
+]
+},
+{
+id:23,
+name:"كريم سم نحل للشعر ",
+image:"images/كريم سم نحل للشعر.jpeg",
+variants:[
+{size:"  60 جرام  ",price:100},
+]
+}
+,
+{
+id:24,
 name:" كريم سم نحل للمفاصل ",
-image:"c:\\Users\\win10\\Desktop\\mnahel\\كريم سم نحل للمفاصل.jpeg",
+image:"images/كريم سم نحل للمفاصل.jpeg",
 variants:[
 {size:"    عبوه واحده",price:200},
 {size:"    عبوتان  ",price:400},
-
 ]
 },
-
 {
-id:23,
+id:25,
+name:" امبول سم النحل للحقن",
+image:"images/امبول سم النحل.jpeg",
+variants:[
+{size:"    عبوه واحده",price:70},
+{size:"    عبوتان  ",price:140},
+]
+},
+{
+id:26,
 name:"كريم البروبليس وسم النحل",
-image:"c:\\Users\\win10\\Desktop\\mnahel\\كريم البروبليس وسم النحل.jpeg",
+image:"images/كريم البروبليس وسم النحل.jpeg",
 variants:[
 {size:"  60 جرام  ",price:110},
+]
+}
+,
+{
+id:27,
+name:"محلول سم النحل",
+image:"images/محلول سم النحل.jpeg",
+variants:[
+{size:"  عبوه واحده ",price:70},
+]
+}
+,
+{
+id:33,
+name:"عبوة غذاء ملكات 5 جرام",
+image:"images/غذاء الملكات.jpeg",
+variants:[
+{size:"  عبوه واحده ",price:100},
+]
+},
+{
+id:34,
+name:"حبوب لقاح 20 جرام",
+image:"images/حبوب لقاح.jpeg",
+variants:[
+{size:"  عبوه واحده ",price:25},
+]
+},
+{
+id:35,
+name:"حبوب لقاح 500 جرام",
+image:"images/حبوب لقاح.jpeg",
+variants:[
+{size:"  عبوه واحده ",price:400},
+]
+},
+{
+id:36,
+name:"طلع نخيل 20 جرام",
+image:"images/طلع نخيل.jpeg",
+variants:[
+{size:"  عبوه واحده ",price:50},
+]
+},
+{
+id:37,
+name:"بروبليس بلدى 10 جرام",
+image:"images/بروبليس.jpeg",
+variants:[
+{size:"  عبوه واحده ",price:100},
+]
+},
+{
+id:38,
+name:"بروبليس بودرة تركيز %70% عبوة 20 جرام",
+image:"images/بروبلیس بودر.jpeg",
+variants:[
+{size:"  عبوه واحده ",price:100},
+]
+},
+{
+id:39,
+name:"جينسنج كوري 20 عبوة 20 جرام",
+image:"images/جينسينج کوری احمر.jpeg",
+variants:[
+{size:"  عبوه واحده ",price:100},
+]
+},
+{
+id:40,
+name:"قطرة بروبليس",
+image:"images/قطرة بروبليس.jpeg",
+variants:[
+{size:"  عبوه واحده ",price:70},
+]
+},
+{
+id:41,
+name:"اشو جندا 20 جرام",
+image:"images/اشوجندا.jpeg",
+variants:[
+{size:"  عبوه واحده ",price:50},
+]
+},
+{
+id:42,
+name:"ماكا 20 جرام",
+image:"images/ماكا.jpeg",
+variants:[
+{size:"  عبوه واحده ",price:100},
+]
+},
+{
+id:43,
+name:"تونكات على 20 جرام",
+image:"images/تونكات علي.jpeg",
+variants:[
+{size:"  عبوه واحده ",price:100},
 ]
 },
 ];
 const productsGrid = document.getElementById("productsGrid");
 
 let cart = [];
-
+const shippingPrices = {
+"القاهرة":100,
+"الإسكندرية":100,
+"الجيزة":100,
+"القليوبية":100,
+"الدقهلية":100,
+"الشرقية":100,
+"المنوفية":100,
+"الغربية":100,
+"دمياط":100,
+"البحيرة":100,
+"كفر الشيخ":100,
+"شرم الشيخ":150,
+"مرسى مطروح":150,
+"مرسى علم":150,
+"الفيوم":100,
+"بني سويف":100,
+"المنيا":100,
+"أسيوط":100,
+"سوهاج":100,
+"قنا":100,
+"الأقصر":100,
+"أسوان":100,
+"العلمين":150,
+"بورسعيد":150,
+"الوادي الجديد":150,
+"الإسماعيلية":100,
+"السويس":100,
+"شمال سيناء":150,
+"جنوب سيناء":150,
+"البحر الأحمر":100
+};
 function renderProducts(){
 
 productsGrid.innerHTML = "";
@@ -782,12 +1101,11 @@ variantBtns.forEach(b=>b.classList.remove("active"));
 btn.classList.add("active");
 
 selectedVariant = {
-size:btn.dataset.size,
-price:Number(btn.dataset.price)
+size: btn.dataset.size,
+price: Number(btn.dataset.price)
 };
 
-document.getElementById(`price-${product.id}`)
-.innerText =
+document.getElementById(`price-${product.id}`).innerText =
 `${selectedVariant.price} ج.م`;
 
 };
@@ -880,6 +1198,20 @@ document.getElementById("totalPrice")
 .innerText =
 `${total} ج.م`;
 
+const governorate =
+document.getElementById("governorate").value;
+
+const shipping =
+shippingPrices[governorate] || 0;
+
+document.getElementById("shippingPrice")
+.innerText =
+`${shipping} ج.م`;
+
+document.getElementById("finalTotal")
+.innerText =
+`${total + shipping} ج.م`;
+
 }
 
 function sendOrderToWhatsApp() {
@@ -968,10 +1300,18 @@ message += `🧾 الإجمالي: ${itemTotal} ج.م\n`;
 message += `------------------\n`;
 
 });
+const shipping =
+shippingPrices[customerGovernorate] || 0;
 
+const finalTotal =
+total + shipping;
+
+message += `\n🚚 الشحن: ${shipping} ج.م`;
+message += `\n💵 إجمالي المنتجات: ${total} ج.م`;
+message += `\n✅ الإجمالي النهائي: ${finalTotal} ج.م`;
 message += `\n💵 الإجمالي الكلي: ${total} ج.م`;
 
-const ownerPhone = "2015527018881";
+const ownerPhone = "201552701888";
 
 window.open(
 `https://wa.me/${ownerPhone}?text=${encodeURIComponent(message)}`,
@@ -1025,9 +1365,14 @@ cartDrawer.classList.remove("open");
 cartOverlay.style.display = "none";
 
 }
-
+document
+.getElementById("governorate")
+.addEventListener("change", updateCart);
 renderProducts();
-
+function toggleMenu(){
+  document.querySelector(".nav-links")
+  .classList.toggle("active");
+}
 </script>
 
 </body>
