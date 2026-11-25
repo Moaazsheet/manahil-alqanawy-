@@ -857,6 +857,7 @@
                     <input
                         type="text"
                         id="fullName"
+                        autocomplete="name"
                         placeholder="اكتب اسمك بالكامل"
                     >
                 </div>
@@ -866,6 +867,8 @@
                     <input
                         type="tel"
                         id="phone"
+                        inputmode="tel"
+                        autocomplete="tel"
                         placeholder="01xxxxxxxxx"
                     >
                 </div>
@@ -929,6 +932,7 @@
                     <input
                         type="text"
                         id="address"
+                        autocomplete="street-address"
                         placeholder="المنطقة - الشارع - رقم المنزل"
                     >
                 </div>
@@ -941,6 +945,7 @@
                     <input
                         type="email"
                         id="email"
+                        autocomplete="email"
                         placeholder="example@email.com"
                     >
                 </div>
@@ -1141,7 +1146,17 @@ const products = [
             { name: "3 × 800 جرام", price: 510 }
         ]
     },
-
+{
+        id: 44,
+        name: "عسل سدر جبلي",
+        image: "images/عسل سدر جبلي.png",
+        options: [
+             { name: "400 جرام", price: 370 },
+            { name: "1000 جرام", price: 770 },
+            { name: "2 × 1000 جرام", price: 1440 },
+            { name: " بالشمع 1000 جرام", price: 850 }
+        ]
+    },
     {
         id: 13,
         name: "تركيبة (عادية) المتزوجين",
@@ -1337,7 +1352,7 @@ const products = [
     },
 
     {
-        id: 44,
+        id: 50,
         name: "محلول سم النحل",
         image: "images/محلول سم النحل.jpeg",
         options: [
@@ -1442,8 +1457,69 @@ const products = [
         options: [
             { name: "عبوة واحدة", price: 100 }
         ]
-    }
+    },
 
+    {
+        id: 45,
+        name: "شمع برسيم",
+        image: "images/شمع برسيم.png",
+        options: [
+            { name: "شهد عسل برسيم 1000جرام", price: 400 },
+            { name: "شهد عسل برسيم 500جرام", price: 200 },  
+            { name: "شهد عسل برسيم 250جرام", price: 110 }
+        ]
+    }
+, 
+    {
+        id: 46,
+        name: "شمع موالح",
+        image: "images/شمع موالح.png",
+        options: [
+            { name: "شهد عسل موالح 1000 جرام", price: 400 },
+            { name: "شهد عسل موالح 500 جرام", price: 200 },
+            { name: "شهد عسل موالح 250 جرام", price: 110 }
+                ]
+    } 
+   
+, 
+    {
+        id: 47,
+        name: "شمع سدر جبلي ",
+        image: "images/شمع سدر جبلي .png",
+        options: [
+            { name: "شمع عسل سدر جبلي 1000 جرام", price: 900 },
+            { name: "شمع عسل سدر جبلي 500 جرام", price: 500 },  
+        ]
+    } 
+     ,
+      {
+        id: 49,
+        name: "شمع شمر",
+        image: "images/شمع شمر.png",
+        options: [
+            { name: "شهد عسل شمر 1000 جرام", price: 400 },
+            { name: "شهد عسل شمر 500 جرام", price: 200 },
+            { name: "شهد عسل شمر 250 جرام", price: 110 }
+                ]
+    } 
+     ,
+      {
+        id: 48,
+        name: "زيوت",
+        image: "images/زيوت.png",
+        options: [
+            { name: "زيت النعناع 60 مللي ", price: 110 },
+            { name: "زيت النعناع 125 مللي", price: 230 },  
+            { name: "زيت جوز هند 60 مللي", price: 35 },
+            { name: "زيت جوز هند 125 مللي", price: 75 },
+            { name: "زيت خروع بلدي 60 مللي", price: 70 },
+            { name: "زيت خروع بلدي 125 مللي", price: 110 },
+            { name: "زيت حبة البركة 60 مللي", price: 65 },
+            { name: "زيت حبة البركة 125 مللي", price: 130 },
+            { name: "زيت بذور الكتان 60 مللي", price: 55 },
+            { name: "زيت بذور الكتان 125 مللي", price: 110 }
+        ]
+    } ,
 ];
 
 
@@ -1517,7 +1593,28 @@ function loadCart() {
             const parsedCart = JSON.parse(savedCart);
 
             if (Array.isArray(parsedCart)) {
-                cart = parsedCart;
+                const validProductIds = new Set(products.map(product => product.id));
+                cart = parsedCart.map(item => {
+                    // ترحيل عنصر محلول سم النحل من المعرّف القديم المكرر إلى المعرّف الجديد.
+                    if (item && item.productName === "محلول سم النحل" && Number(item.productId) === 44) {
+                        return { ...item, productId: 50 };
+                    }
+                    return item;
+                }).filter(item =>
+                    item &&
+                    validProductIds.has(Number(item.productId)) &&
+                    typeof item.productName === "string" &&
+                    typeof item.optionName === "string" &&
+                    Number.isFinite(Number(item.price)) &&
+                    Number(item.price) >= 0 &&
+                    Number.isInteger(Number(item.quantity)) &&
+                    Number(item.quantity) > 0
+                ).map(item => ({
+                    ...item,
+                    productId: Number(item.productId),
+                    price: Number(item.price),
+                    quantity: Number(item.quantity)
+                }));
             }
 
         }
@@ -1579,10 +1676,14 @@ function saveCustomerData() {
             document.getElementById("email").value
     };
 
-    localStorage.setItem(
-        CUSTOMER_STORAGE_KEY,
-        JSON.stringify(customer)
-    );
+    try {
+        localStorage.setItem(
+            CUSTOMER_STORAGE_KEY,
+            JSON.stringify(customer)
+        );
+    } catch (error) {
+        console.error("خطأ أثناء حفظ بيانات العميل:", error);
+    }
 }
 
 
@@ -2029,7 +2130,9 @@ function getShippingPrice() {
         return 0;
     }
 
-    return shippingPrices[governorate] || 0;
+    return Object.prototype.hasOwnProperty.call(shippingPrices, governorate)
+        ? shippingPrices[governorate]
+        : 0;
 
 }
 
@@ -2316,21 +2419,14 @@ function sendOrderToWhatsApp() {
     const element =
         document.getElementById(id);
 
-    element.addEventListener(
-        "input",
-        saveCustomerData
-    );
+    if (!element) return;
 
-    element.addEventListener(
-        "change",
-        () => {
+    element.addEventListener("input", saveCustomerData);
 
-            saveCustomerData();
-
-            updateTotals();
-
-        }
-    );
+    element.addEventListener("change", () => {
+        saveCustomerData();
+        updateTotals();
+    });
 
 });
 
